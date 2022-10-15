@@ -1,7 +1,8 @@
 name: webview_suit
 description: A suite for rapid development of hybrid applications
 version: 0.0.1
-homepage:
+homepage: https://github.com/demonskp/webview_suit
+
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -15,6 +16,7 @@ dependencies:
   path_provider: ^2.0.11
   archive: ^3.1.2
   shared_preferences: ^2.0.15
+  path: ^1.8.1
 
 dev_dependencies:
   flutter_test:

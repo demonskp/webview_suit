@@ -1,3 +1,4 @@
+library webview_suit;
 
 export 'package:webview_suit/widget/webview_suit_widget.dart';
 export 'package:webview_suit/interface/plugin_interface.dart';
