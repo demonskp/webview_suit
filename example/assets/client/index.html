@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">这是一个测试</div>
+<img id="pic" src="" alt="照片" srcset="">
+<button id="print">print</button>
+<button id="scan">扫码</button>
+<div>
+    <button id="photo">拍照</button>
+    <button id="picture">选相片</button>
+</div>
+<script src="./lib/bridge.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+        const textEl = document.querySelector("#app");
+        const picEl = document.querySelector("#pic");
+
+        const printBtn = document.querySelector("#print");
+        // const scanBtn = document.querySelector("#scan");
+        // const photoBtn = document.querySelector("#photo");
+        // const pictureBtn = document.querySelector("#picture");
+
+        printBtn.addEventListener("click", ()=>{
+            window.bridge.print("测试");
+        });
+        // scanBtn.addEventListener("click", async ()=>{
+        //     const result = await window.bridge.scan();
+        //     textEl.innerHTML = result.value;
+        //     document.title = result.value;
+        // });
+        // photoBtn.addEventListener("click", async ()=>{
+        //     const result = await window.bridge.photo();
+        //     picEl.src = result.localId;
+        //     textEl.innerHTML = result.localId;
+        // });
+        // pictureBtn.addEventListener("click", async ()=>{
+        //     const result = await window.bridge.photo({type: ["gallery"], max:5 });
+        //     picEl.src = result.localId;
+        //     textEl.innerHTML = result.localId;
+        // })
+    })
+</script>
+</body>
+<style>
+    #pic {
+        width: 80px;
+        object-fit: contain;
+    }
+</style>
+</html>
