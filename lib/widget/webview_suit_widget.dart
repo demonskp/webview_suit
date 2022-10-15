@@ -3,21 +3,21 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_suit/interface/plugin_interface.dart';
 import 'package:webview_suit/modules/app_message.dart';
 import 'package:webview_suit/modules/child_app.dart';
-import 'package:webview_suit/modules/plugin_controller.dart';
+import 'package:webview_suit/modules/suit_controller.dart';
+
+typedef SuitCreateFun = void Function(SuitController suitController);
 
 typedef PluginsBuilder = List<PluginInterface> Function(
-    PluginController pController);
+    SuitController suitController);
 
 typedef MainAppBuilder = Future<ChildApp> Function();
 
 class WebViewSuitWidget extends StatefulWidget {
   String name;
 
-  PluginsBuilder? pluginsBuilder;
+  SuitCreateFun? onSuitCreate;
 
-  MainAppBuilder mainAppBuilder;
-
-  WebViewSuitWidget(this.name, {Key? key, this.pluginsBuilder, required this.mainAppBuilder}) : super(key: key);
+  WebViewSuitWidget(this.name, {Key? key, this.onSuitCreate}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -46,11 +46,8 @@ class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
     }
   }
 
-  _loadHtmlFromAssets() async {
-    var app = await widget.mainAppBuilder();
-    // await app.init();
-    var indexPath = app.indexPath;
-    _webController?.loadFile("file://$indexPath");
+  loadPlugins(List<PluginInterface> plugins) {
+    this.plugins = plugins;
   }
 
   @override
@@ -59,11 +56,11 @@ class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
       javascriptChannels: <JavascriptChannel>{_jsChan(context)},
       onWebViewCreated: (WebViewController webController) {
         _webController = webController;
-        var pController = PluginController(context, webController, widget.name);
-        if (widget.pluginsBuilder is! Null) {
-          plugins = widget.pluginsBuilder!(pController);
+        var suitController =
+            SuitController(context, webController, widget.name, loadPlugins);
+        if (widget.onSuitCreate is! Null) {
+          widget.onSuitCreate!(suitController);
         }
-        _loadHtmlFromAssets();
       },
       javascriptMode: JavascriptMode.unrestricted,
     );

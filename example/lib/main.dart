@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:webview_suit/modules/suit_controller.dart';
 import 'package:webview_suit/webview_suit.dart';
 import 'package:webview_suit_example/Plugins/self_plugin.dart';
 
@@ -38,20 +39,13 @@ class _MyAppState extends State<MyApp> {
         ),
         body: SafeArea(
           child: WebViewSuitWidget(
-            "__myJsBridge__",
-            mainAppBuilder: () async {
-              var byteData = await rootBundle.load("assets/client/client.zip");
-              var unit8List = byteData.buffer
-                  .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
-              var mainApp = ChildApp("main");
-              await mainApp.init();
-              mainApp.create(unit8List);
-              return mainApp;
-            },
-            pluginsBuilder: (PluginController pController){
-              return [SelfPlugin(pController)];
-            },
-          ),
+              "__myJsBridge__",
+              onSuitCreate: (SuitController suitController) async {
+            var mainApp =
+                await ChildApp.autoCreate("main", "assets/client/client.zip");
+            suitController.loadPlugins([SelfPlugin(suitController)]);
+            suitController.loadApp(mainApp);
+          }),
         ),
       ),
     );

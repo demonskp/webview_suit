@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:webview_suit/modules/suit_controller.dart';
 import 'package:webview_suit/webview_suit.dart';
 
 class SelfPlugin extends PluginInterface {
 
-  PluginController pluginController;
+  SuitController suitController;
 
-  SelfPlugin(this.pluginController) {
+  SelfPlugin(this.suitController) {
     register("self", false);
   }
 
