@@ -52,17 +52,29 @@ class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      javascriptChannels: <JavascriptChannel>{_jsChan(context)},
-      onWebViewCreated: (WebViewController webController) {
-        _webController = webController;
-        var suitController =
-            SuitController(context, webController, widget.name, loadPlugins);
-        if (widget.onSuitCreate is! Null) {
-          widget.onSuitCreate!(suitController);
-        }
-      },
-      javascriptMode: JavascriptMode.unrestricted,
+    List<Widget> pluginWidgets = [];
+    this.plugins.forEach((element) {
+      if (element.hasUI) {
+        pluginWidgets.add(element);
+      }
+    });
+
+    return Stack(
+      children: [
+        WebView(
+          javascriptChannels: <JavascriptChannel>{_jsChan(context)},
+          onWebViewCreated: (WebViewController webController) {
+            _webController = webController;
+            var suitController = SuitController(
+                context, webController, widget.name, loadPlugins);
+            if (widget.onSuitCreate is! Null) {
+              widget.onSuitCreate!(suitController);
+            }
+          },
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
+        ...pluginWidgets,
+      ],
     );
   }
 }
