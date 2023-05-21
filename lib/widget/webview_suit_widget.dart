@@ -26,7 +26,7 @@ class WebViewSuitWidget extends StatefulWidget {
 }
 
 class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
-  // WebViewController? _webController;
+  WebViewController? _webController;
   List<PluginInterface> plugins = [];
   List<Widget> pluginWidgets = [];
 
