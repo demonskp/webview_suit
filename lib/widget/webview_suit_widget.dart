@@ -26,8 +26,9 @@ class WebViewSuitWidget extends StatefulWidget {
 }
 
 class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
-  WebViewController? _webController;
+  // WebViewController? _webController;
   List<PluginInterface> plugins = [];
+  List<Widget> pluginWidgets = [];
 
   JavascriptChannel _jsChan(BuildContext context) => JavascriptChannel(
       name: widget.name,
@@ -47,17 +48,18 @@ class WebViewSuitWidgetState extends State<WebViewSuitWidget> {
   }
 
   loadPlugins(List<PluginInterface> plugins) {
-    this.plugins = plugins;
+    setState(() {
+      this.plugins = plugins;
+      for (var element in this.plugins) {
+        if (element.hasUI) {
+          pluginWidgets.add(element);
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> pluginWidgets = [];
-    this.plugins.forEach((element) {
-      if (element.hasUI) {
-        pluginWidgets.add(element);
-      }
-    });
 
     return Stack(
       children: [
